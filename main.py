@@ -1,8 +1,10 @@
 import numpy as np
 import cv2 as cv
 import draw 
+import camera
 
 myDraw = draw.Draw()
+myCamera = camera.Camera()
 
 # mouse callback function
 # Either draws hollow rectangles or circles depending on mode, which is toggled by pressing "m"
@@ -50,6 +52,12 @@ cv.createTrackbar('G', 'settings', 255, 255, myDraw.changeG)
 cv.createTrackbar('B', 'settings', 255, 255, myDraw.changeB)
 cv.createTrackbar('thickness', 'settings', 5, 30, myDraw.changeT)
 
+cap = cv.VideoCapture(0)
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
+
+
 while(1):
     cv.imshow('image',myDraw.img)
     k = cv.waitKey(5) & 0xFF
@@ -68,7 +76,15 @@ while(1):
     elif k == 27: #Press esc to escape
         break
     
-    cv.imshow('settings', myDraw.settingsImg)
     myDraw.draw_settings()
+    cv.imshow('settings', myDraw.settingsImg)
+
+    ret, frame = cap.read()
+    if not ret:
+        print("Can't receive frame (stream end?).")
+    
+    myCamera.updateImage(frame, myDraw.img)
+    cv.imshow('camera', frame)
+
  
 cv.destroyAllWindows()

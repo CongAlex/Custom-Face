@@ -9,7 +9,7 @@ class Draw:
         self.mode = 0 # if True, draw rectangle. Press 'm' to toggle to curve
         self.ix,self.iy = -1,-1 #initial positions
         self.lastx, self.lasty = 0, 0 #last x and y positions
-        self.img = np.zeros((512, 512,3), np.uint8)
+        self.img = np.zeros((256, 256,3), np.uint8)
         self.scale_percent = 0.1
         self.settingsImg = np.zeros((200, 450, 3), np.uint8)
         self.rgb = [0, 0, 0]
